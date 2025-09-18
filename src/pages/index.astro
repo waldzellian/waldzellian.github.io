@@ -1,0 +1,109 @@
+---
+import "computer-modern/cmu-serif.css";
+---
+
+<style>
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "CMU Serif", "Times New Roman", serif;
+    font-size: 1.2rem;
+  }
+
+  h1,
+  h2 {
+    font-weight: normal;
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .horizontal {
+    float: left;
+    margin-right: 4em;
+  }
+
+  #canvas {
+    image-rendering: pixelated;
+
+    width: 256px;
+    height: 256px;
+
+    margin-right: 4em;
+  }
+</style>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Christopher Ptak</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="256" height="256"></canvas>
+
+    <div>
+      <h1>Christopher Ptak</h1>
+      <div class="horizontal">
+        <h2>Links</h2>
+        <ul>
+          <li><a href="https://github.com/waldzellian">GitHub</a></li>
+          <li><a href="https://youtube.com/@waldzellian">YouTube</a></li>
+          <li><a href="https://x.com/waldzellian">X</a></li>
+        </ul>
+      </div>
+      <div class="horizontal">
+        <h2>Projects</h2>
+        <ul>
+          <li>
+            <a href="https://github.com/waldzellian/automaton"
+              >Cellular Automaton</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      import { Automaton } from "@scripts/automaton.js";
+
+      const canvas = document.getElementById("canvas");
+      const automaton = new Automaton(256, 256);
+
+      // Start with a random grid
+      automaton.randomizeCells();
+      automaton.render(canvas);
+
+      // Randomize the kernel every 8 seconds
+      setInterval(function () {
+        const size = 3 + Math.floor(Math.random() * 4);
+        automaton.randomizeKernel(size);
+        console.log("randomized kernel");
+      }, 8000);
+
+      // Iterate and render on every frame
+      (function step() {
+        automaton.iterate();
+        automaton.render(canvas);
+        requestAnimationFrame(step);
+      })();
+    </script>
+  </body>
+</html>

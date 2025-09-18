@@ -1,0 +1,7 @@
+/.astro/
+/dist/
+.env
+.env.production
+node_modules/
+/npm-debug.log*
+/.wrangler/
