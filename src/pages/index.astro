@@ -81,25 +81,25 @@ import "computer-modern/cmu-serif.css";
     </div>
 
     <script>
-      import { Automaton } from "@scripts/automaton.js";
+      import { AutomatonState, Kernel } from "@scripts/automaton.js";
 
       const canvas = document.getElementById("canvas");
-      const automaton = new Automaton(256, 256);
+      const state = new AutomatonState(256, 256);
+      let kernel = Kernel.random();
 
       // Start with a random grid
-      automaton.randomizeCells();
-      automaton.render(canvas);
+      state.randomize();
+      state.render(canvas);
 
       // Randomize the kernel every 8 seconds
       setInterval(function () {
-        const size = 3 + Math.floor(Math.random() * 4);
-        automaton.randomizeKernel(size);
+        kernel = Kernel.random();
       }, 8000);
 
       // Iterate and render on every frame
       (function step() {
-        automaton.iterate();
-        automaton.render(canvas);
+        state.step(kernel);
+        state.render(canvas);
         requestAnimationFrame(step);
       })();
     </script>
